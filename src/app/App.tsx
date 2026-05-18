@@ -7,6 +7,7 @@ import { Header } from "@/common/components/Header/Header";
 import { getTheme, type ThemeMode } from "@/common/Theme/theme";
 import { AppRouter } from "@/common/Routing/router";
 import { ErrorSnackbar } from "@/common/components/ErrorSnackbar/ErrorSnackbar";
+import { GlobalLinearProgress } from "@/common/components/Loader/GlobalLinearProgress";
 
 export function App() {
     const [mode, setMode] = useState<ThemeMode>(() => {
@@ -24,6 +25,7 @@ export function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
+            <GlobalLinearProgress />
             <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
                 <Header mode={mode} onToggleTheme={toggleTheme} />
                 <Box sx={{ flex: 1 }}>

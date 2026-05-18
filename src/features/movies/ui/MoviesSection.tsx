@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Typography, Alert } from "@mui/material";
+import { Box, Button, Typography, Alert } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import type { MovieCard as MovieCardType } from "@/features/movies/api/tmdbApi.types";
@@ -52,19 +52,13 @@ export const MoviesSection = ({
                 )}
             </Box>
 
-            {isLoading && (
-                <Box className={classes.loaderBox}>
-                    <CircularProgress />
-                </Box>
-            )}
-
             {isError && (
                 <Alert severity="error" className={classes.errorBox}>
                     TMDB request failed.
                 </Alert>
             )}
 
-            {!isLoading && !isError && movies && movies.length > 0 && (
+            {!isError && movies && movies.length > 0 && (
                 <Box className={`${classes.grid} ${gridClassName ?? ""}`}>
                     {movies.map((movie) => (
                         <MoviePosterCard

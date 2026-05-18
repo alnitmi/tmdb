@@ -6,7 +6,6 @@ import {
     Container,
     TextField,
     Typography,
-    LinearProgress,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useMemo, useState, type FormEvent } from "react";

@@ -13,7 +13,6 @@ import {
     Chip,
     Paper,
     Divider,
-    LinearProgress,
 } from "@mui/material";
 import { useGetGenresQuery, useDiscoverMoviesQuery } from "@/features/movies/api/tmdbApi";
 import { MoviesSection } from "@/features/movies/ui/MoviesSection";
@@ -56,7 +55,7 @@ export const FilteredMoviesPage = () => {
         }),
     };
 
-    const { data, isLoading, isError, isFetching } = useDiscoverMoviesQuery(queryArgs);
+    const { data, isLoading, isError } = useDiscoverMoviesQuery(queryArgs);
 
     const handleGenreToggle = (genreId: number) => {
         setSelectedGenreIds((prev) =>
@@ -77,7 +76,6 @@ export const FilteredMoviesPage = () => {
 
     return (
         <Container sx={{ mt: 4 }}>
-            {isFetching && <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }} />}
             <Typography variant="h4" gutterBottom>
                 Filtered Movies
             </Typography>
@@ -148,21 +146,17 @@ export const FilteredMoviesPage = () => {
                 </Box>
 
                 <Box sx={{ flex: 1 }}>
-                    {isLoading ? (
-                        <LinearProgress sx={{ mt: 2 }} />
-                    ) : (
-                        <MoviesSection
-                            title=""
-                            movies={data?.results}
-                            isLoading={false}
-                            isError={isError}
-                            likedMovies={likedMovies}
-                            isLiked={isLiked}
-                            onToggleLike={toggleLike}
-                            showViewMore={false}
-                            gridClassName={classes.gridCategories}
-                        />
-                    )}
+                    <MoviesSection
+                        title=""
+                        movies={data?.results}
+                        isLoading={isLoading}
+                        isError={isError}
+                        likedMovies={likedMovies}
+                        isLiked={isLiked}
+                        onToggleLike={toggleLike}
+                        showViewMore={false}
+                        gridClassName={classes.gridCategories}
+                    />
                     {data && data.totalPages > 1 && (
                         <Pagination
                             count={data.totalPages}

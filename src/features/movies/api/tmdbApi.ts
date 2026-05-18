@@ -1,6 +1,7 @@
 ﻿import { createApi } from "@reduxjs/toolkit/query/react";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { setError } from "@/app/errorSlice";
+import { startLoading, stopLoading } from "@/app/loadingSlice";
 import type {
   MovieCard,
   MovieDto,
@@ -57,12 +58,14 @@ const baseQueryWithErrorHandler = fetchBaseQuery({
   },
 });
 
-const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
+const baseQueryWithLoadingAndError = async (args, api, extraOptions) => {
+  api.dispatch(startLoading());
   const result = await baseQueryWithErrorHandler(args, api, extraOptions);
+  api.dispatch(stopLoading());
+
   if (result.error) {
     const status = result.error.status;
     let message = "Something went wrong";
-
     if (status === "FETCH_ERROR" || status === 0) {
       message = "Network error. Check your internet connection.";
     } else if (status === 401) {
@@ -72,7 +75,6 @@ const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
     } else if (status >= 500) {
       message = "Server error. Please try again later.";
     }
-
     api.dispatch(setError(message));
   }
   return result;
@@ -80,7 +82,7 @@ const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
 
 export const tmdbApi = createApi({
   reducerPath: "tmdbApi",
-  baseQuery: baseQueryWithErrorHandling,
+  baseQuery: baseQueryWithLoadingAndError,
   endpoints: (builder) => ({
     getPopularMovies: builder.query<MovieList, number | undefined>({
       query: (page = 1) => ({

@@ -3,7 +3,6 @@ import {
     Container,
     Typography,
     Box,
-    LinearProgress,
     Alert,
     Chip,
     Button,
@@ -34,7 +33,7 @@ export const MovieDetailsPage = () => {
     const { data: similarMovies, isLoading: similarLoading } = useGetSimilarMoviesQuery(movieId);
     const { likedMovies, toggleLike, isLiked } = useLikedMovies();
 
-    if (isLoading) return <LinearProgress sx={{ mt: 4 }} />;
+    if (isLoading) return null;
     if (isError || !movie) {
         return (
             <Container sx={{ py: 4 }}>
@@ -108,9 +107,7 @@ export const MovieDetailsPage = () => {
 
                 <Box sx={{ mt: 4 }}>
                     <Typography variant="h5" gutterBottom>Similar Movies</Typography>
-                    {similarLoading ? (
-                        <LinearProgress sx={{ mt: 2 }} />
-                    ) : similarMovies?.results?.length ? (
+                    {similarMovies?.results?.length ? (
                         <MoviesSection
                             title=""
                             movies={similarMovies.results.slice(0, 6)}
