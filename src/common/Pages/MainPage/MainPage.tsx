@@ -6,6 +6,7 @@ import {
     Container,
     TextField,
     Typography,
+    LinearProgress,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useMemo, useState, type FormEvent } from "react";
@@ -17,16 +18,16 @@ import {
     useGetUpcomingMoviesQuery,
 } from "@/features/movies/api/tmdbApi";
 import { getImageUrl, movieSections } from "@/features/movies/model/movieModel";
-import { useLikedMovies } from "@/common/Hooks/useLikedMovies";
-import { MoviesSection } from "@/common/components/MoviesSection/MoviesSection";
-import classes from "./Movies.module.css";
+import { useLikedMovies } from "@/features/favorites/model/useLikedMovies";
+import { MoviesSection } from "@/features/movies/ui/MoviesSection";
+import classes from "../../../features/movies/ui/Movies.module.css";
 
 export const MainPage = () => {
     const [searchValue, setSearchValue] = useState("");
     const [heroSeed] = useState(() => Math.random());
     const navigate = useNavigate();
 
-    const { likedMovieIds, toggleLike } = useLikedMovies();
+    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
 
     const hasTmdbCredentials = Boolean(
         import.meta.env.VITE_TMDB_API_KEY || import.meta.env.VITE_TMDB_TOKEN
@@ -116,40 +117,41 @@ export const MainPage = () => {
                         movies={popularQuery.data?.results?.slice(0, 6)}
                         isLoading={popularQuery.isLoading}
                         isError={popularQuery.isError}
-                        likedMovieIds={likedMovieIds}
+                        likedMovies={likedMovies}
+                        isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
                         viewMoreLink="/movies/popular"
                     />
-
                     <MoviesSection
                         title={movieSections[1].title}
                         movies={topRatedQuery.data?.results?.slice(0, 6)}
                         isLoading={topRatedQuery.isLoading}
                         isError={topRatedQuery.isError}
-                        likedMovieIds={likedMovieIds}
+                        likedMovies={likedMovies}
+                        isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
                         viewMoreLink="/movies/top-rated"
                     />
-
                     <MoviesSection
                         title={movieSections[2].title}
                         movies={upcomingQuery.data?.results?.slice(0, 6)}
                         isLoading={upcomingQuery.isLoading}
                         isError={upcomingQuery.isError}
-                        likedMovieIds={likedMovieIds}
+                        likedMovies={likedMovies}
+                        isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
                         viewMoreLink="/movies/upcoming"
                     />
-
                     <MoviesSection
                         title={movieSections[3].title}
                         movies={nowPlayingQuery.data?.results?.slice(0, 6)}
                         isLoading={nowPlayingQuery.isLoading}
                         isError={nowPlayingQuery.isError}
-                        likedMovieIds={likedMovieIds}
+                        likedMovies={likedMovies}
+                        isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
                         viewMoreLink="/movies/now-playing"

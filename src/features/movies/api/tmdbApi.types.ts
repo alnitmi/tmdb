@@ -6,6 +6,7 @@ export interface MovieDto {
   backdrop_path: string | null;
   release_date: string;
   vote_average: number;
+  runtime?: number;
   genres?: { id: number; name: string }[];
 }
 
@@ -17,6 +18,7 @@ export interface MovieCard {
   backdropPath: string | null;
   releaseDate: string;
   voteAverage: number;
+  runtime?: number;
   genres?: { id: number; name: string }[];
 }
 

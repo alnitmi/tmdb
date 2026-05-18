@@ -1,5 +1,5 @@
 ﻿import Box from "@mui/material/Box";
-import type { ThemeMode } from "@/common/theme/theme";
+import type { ThemeMode } from "@/common/Theme/theme";
 import classes from "./Footer.module.css";
 
 type FooterProps = {

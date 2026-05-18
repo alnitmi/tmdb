@@ -1,16 +1,10 @@
 import { useState, type FormEvent, useEffect } from "react";
-import {
-    Box,
-    Container,
-    TextField,
-    Button,
-    Typography,
-} from "@mui/material";
+import { Box, Container, TextField, Button, Typography, Alert, LinearProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import { useSearchMoviesQuery } from "@/features/movies/api/tmdbApi";
-import { MoviesSection } from "@/common/components/MoviesSection/MoviesSection";
-import { useLikedMovies } from "@/common/Hooks/useLikedMovies";
+import { MoviesSection } from "@/features/movies/ui/MoviesSection";
+import { useLikedMovies } from "@/features/favorites/model/useLikedMovies";
 import { useDeferredValue } from "react";
 import { skipToken } from "@reduxjs/toolkit/query";
 import classes from "@/features/movies/ui/Movies.module.css";
@@ -32,7 +26,7 @@ export const SearchPage = () => {
     const { data, isLoading, isError, isFetching } = useSearchMoviesQuery(
         deferredQuery ? { query: deferredQuery } : skipToken
     );
-    const { likedMovieIds, toggleLike } = useLikedMovies();
+    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
 
     const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,12 +46,9 @@ export const SearchPage = () => {
                     Search Movies
                 </Typography>
 
-                <Box
-                    component="form"
-                    onSubmit={handleSearchSubmit}
-                    className={classes.searchForm}
-                >
+                <Box component="form" onSubmit={handleSearchSubmit} className={classes.searchForm}>
                     <TextField
+                        type="search"
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         placeholder="Search for a movie"
@@ -74,17 +65,30 @@ export const SearchPage = () => {
                     </Button>
                 </Box>
 
+                {!deferredQuery && (
+                    <Typography sx={{ mt: 4 }}>Enter a movie title to start searching</Typography>
+                )}
+
                 {deferredQuery && (
                     <Box sx={{ mt: 4 }}>
-                        <MoviesSection
-                            title={`Results for "${deferredQuery}"`}
-                            movies={data?.results}
-                            isLoading={isLoading || isFetching}
-                            isError={isError}
-                            likedMovieIds={likedMovieIds}
-                            onToggleLike={toggleLike}
-                            showViewMore={false}
-                        />
+                        {isLoading || isFetching ? (
+                            <LinearProgress sx={{ mt: 2 }} />
+                        ) : isError ? (
+                            <Alert severity="error">Failed to load results</Alert>
+                        ) : data?.results?.length === 0 ? (
+                            <Typography>No matches found for "{deferredQuery}"</Typography>
+                        ) : (
+                            <MoviesSection
+                                title={`Results for "${deferredQuery}"`}
+                                movies={data?.results}
+                                isLoading={false}
+                                isError={false}
+                                likedMovies={likedMovies}
+                                isLiked={isLiked}
+                                onToggleLike={toggleLike}
+                                showViewMore={false}
+                            />
+                        )}
                     </Box>
                 )}
             </Container>

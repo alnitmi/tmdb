@@ -2,7 +2,8 @@ import { Box, Button, CircularProgress, Typography, Alert } from "@mui/material"
 import { useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import type { MovieCard as MovieCardType } from "@/features/movies/api/tmdbApi.types";
-import { MoviePosterCard } from "@/common/components/MoviePosterCard/MoviePosterCard";
+import { MoviePosterCard } from "@/features/movies/ui/MoviePosterCard";
+import type { LikedMovie } from "@/features/favorites/model/useLikedMovies";
 import classes from "@/features/movies/ui/Movies.module.css";
 
 type MoviesSectionProps = {
@@ -10,8 +11,9 @@ type MoviesSectionProps = {
     movies?: MovieCardType[];
     isLoading: boolean;
     isError: boolean;
-    likedMovieIds: Set<number>;
-    onToggleLike: (movieId: number) => void;
+    likedMovies: LikedMovie[];
+    isLiked: (id: number) => boolean;
+    onToggleLike: (movie: LikedMovie) => void;
     showViewMore?: boolean;
     viewMoreLink?: string;
     gridClassName?: string;
@@ -22,7 +24,8 @@ export const MoviesSection = ({
                                   movies,
                                   isLoading,
                                   isError,
-                                  likedMovieIds,
+                                  likedMovies,
+                                  isLiked,
                                   onToggleLike,
                                   showViewMore = false,
                                   viewMoreLink = "#",
@@ -67,7 +70,7 @@ export const MoviesSection = ({
                         <MoviePosterCard
                             key={movie.id}
                             movie={movie}
-                            liked={likedMovieIds.has(movie.id)}
+                            liked={isLiked(movie.id)}
                             onToggleLike={onToggleLike}
                         />
                     ))}

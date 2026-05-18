@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import { NavButton } from "@/common/components/NavButton/NavButton";
-import type { ThemeMode } from "@/common/theme/theme";
+import type { ThemeMode } from "@/common/Theme/theme";
 import logo from "@/assets/tmdb.svg";
 
 import styles from "./Header.module.css";

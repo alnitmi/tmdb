@@ -13,10 +13,12 @@ import {
     Chip,
     Paper,
     Divider,
+    LinearProgress,
 } from "@mui/material";
 import { useGetGenresQuery, useDiscoverMoviesQuery } from "@/features/movies/api/tmdbApi";
-import { MoviesSection } from "@/common/components/MoviesSection/MoviesSection";
-import { useLikedMovies } from "@/common/Hooks/useLikedMovies";
+import { MoviesSection } from "@/features/movies/ui/MoviesSection";
+import { useLikedMovies } from "@/features/favorites/model/useLikedMovies";
+import { useDebounce } from "@/common/Hooks/useDebounce";
 import classes from "@/features/movies/ui/Movies.module.css";
 
 const sortOptions = [
@@ -24,6 +26,8 @@ const sortOptions = [
     { value: "popularity.asc", label: "Popularity ↑" },
     { value: "vote_average.desc", label: "Rating ↓" },
     { value: "vote_average.asc", label: "Rating ↑" },
+    { value: "release_date.desc", label: "Release Date ↓" },
+    { value: "release_date.asc", label: "Release Date ↑" },
     { value: "original_title.asc", label: "A–Z" },
     { value: "original_title.desc", label: "Z–A" },
 ];
@@ -34,23 +38,25 @@ export const FilteredMoviesPage = () => {
     const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([]);
     const [ratingRange, setRatingRange] = useState<[number, number]>([0, 10]);
 
+    const debouncedRating = useDebounce(ratingRange, 200);
+
     const { data: genresData } = useGetGenresQuery();
-    const { likedMovieIds, toggleLike } = useLikedMovies();
+    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
 
     const withGenres = selectedGenreIds.join(",");
-    const hasRatingFilter = ratingRange[0] !== 0 || ratingRange[1] !== 10;
+    const hasRatingFilter = debouncedRating[0] !== 0 || debouncedRating[1] !== 10;
 
     const queryArgs = {
         sort_by: sortBy,
         page,
         ...(withGenres && { with_genres: withGenres }),
         ...(hasRatingFilter && {
-            "vote_average.gte": ratingRange[0],
-            "vote_average.lte": ratingRange[1],
+            "vote_average.gte": debouncedRating[0],
+            "vote_average.lte": debouncedRating[1],
         }),
     };
 
-    const { data, isLoading, isError } = useDiscoverMoviesQuery(queryArgs);
+    const { data, isLoading, isError, isFetching } = useDiscoverMoviesQuery(queryArgs);
 
     const handleGenreToggle = (genreId: number) => {
         setSelectedGenreIds((prev) =>
@@ -71,6 +77,7 @@ export const FilteredMoviesPage = () => {
 
     return (
         <Container sx={{ mt: 4 }}>
+            {isFetching && <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }} />}
             <Typography variant="h4" gutterBottom>
                 Filtered Movies
             </Typography>
@@ -89,16 +96,10 @@ export const FilteredMoviesPage = () => {
                             gap: 3,
                         }}
                     >
-                        <Typography variant="subtitle1" fontWeight="medium">
-                            Filters
-                        </Typography>
-
+                        <Typography variant="subtitle1" fontWeight="medium">Filters</Typography>
                         <Divider />
-
                         <Box>
-                            <Typography variant="body2" color="text.secondary" gutterBottom fontWeight={500}>
-                                Genres
-                            </Typography>
+                            <Typography variant="body2" color="text.secondary" gutterBottom fontWeight={500}>Genres</Typography>
                             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 1 }}>
                                 {genresData?.map((genre) => (
                                     <Chip
@@ -113,13 +114,9 @@ export const FilteredMoviesPage = () => {
                                 ))}
                             </Box>
                         </Box>
-
                         <Divider />
-
                         <Box>
-                            <Typography variant="body2" color="text.secondary" gutterBottom fontWeight={500}>
-                                Rating
-                            </Typography>
+                            <Typography variant="body2" color="text.secondary" gutterBottom fontWeight={500}>Rating</Typography>
                             <Box sx={{ px: 1, pt: 1 }}>
                                 <Slider
                                     value={ratingRange}
@@ -127,59 +124,45 @@ export const FilteredMoviesPage = () => {
                                     valueLabelDisplay="auto"
                                     min={0}
                                     max={10}
-                                    step={0.5}
-                                    marks={[
-                                        { value: 0, label: "0" },
-                                        { value: 10, label: "10" },
-                                    ]}
+                                    step={0.1}
+                                    marks={[{ value: 0, label: "0" }, { value: 10, label: "10" }]}
                                 />
                             </Box>
                             <Typography variant="caption" color="text.disabled" sx={{ textAlign: "center", display: "block" }}>
                                 {ratingRange[0]} – {ratingRange[1]}
                             </Typography>
                         </Box>
-
                         <Divider />
-
                         <FormControl size="small" fullWidth>
                             <InputLabel>Sort by</InputLabel>
-                            <Select
-                                value={sortBy}
-                                label="Sort by"
-                                onChange={(e) => setSortBy(e.target.value)}
-                            >
+                            <Select value={sortBy} label="Sort by" onChange={(e) => setSortBy(e.target.value)}>
                                 {sortOptions.map((opt) => (
-                                    <MenuItem key={opt.value} value={opt.value}>
-                                        {opt.label}
-                                    </MenuItem>
+                                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Paper>
-
-                    <Button
-                        variant="outlined"
-                        onClick={handleReset}
-                        fullWidth
-                        startIcon={<span>↺</span>}
-                        sx={{ color: "text.primary", borderColor: "divider" }}
-                    >
+                    <Button variant="outlined" onClick={handleReset} fullWidth startIcon={<span>↺</span>}>
                         Reset filters
                     </Button>
                 </Box>
 
                 <Box sx={{ flex: 1 }}>
-                    <MoviesSection
-                        title=""
-                        movies={data?.results}
-                        isLoading={isLoading}
-                        isError={isError}
-                        likedMovieIds={likedMovieIds}
-                        onToggleLike={toggleLike}
-                        showViewMore={false}
-                        gridClassName={classes.gridCategories}
-                    />
-
+                    {isLoading ? (
+                        <LinearProgress sx={{ mt: 2 }} />
+                    ) : (
+                        <MoviesSection
+                            title=""
+                            movies={data?.results}
+                            isLoading={false}
+                            isError={isError}
+                            likedMovies={likedMovies}
+                            isLiked={isLiked}
+                            onToggleLike={toggleLike}
+                            showViewMore={false}
+                            gridClassName={classes.gridCategories}
+                        />
+                    )}
                     {data && data.totalPages > 1 && (
                         <Pagination
                             count={data.totalPages}

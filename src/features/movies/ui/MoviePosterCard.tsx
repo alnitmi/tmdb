@@ -3,12 +3,13 @@ import { useTheme } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import type { MovieCard as MovieCardType } from "@/features/movies/api/tmdbApi.types";
 import { getImageUrl } from "@/features/movies/model/movieModel";
+import type { LikedMovie } from "@/features/favorites/model/useLikedMovies";
 import classes from "@/features/movies/ui/Movies.module.css";
 
 type MoviePosterCardProps = {
     movie: MovieCardType;
     liked: boolean;
-    onToggleLike: (movieId: number) => void;
+    onToggleLike: (movie: LikedMovie) => void;
 };
 
 export const MoviePosterCard = ({ movie, liked, onToggleLike }: MoviePosterCardProps) => {
@@ -22,6 +23,17 @@ export const MoviePosterCard = ({ movie, liked, onToggleLike }: MoviePosterCardP
         if (rating >= 7.5) return classes.ratingHigh;
         if (rating >= 5) return classes.ratingMedium;
         return classes.ratingLow;
+    };
+
+    const handleLikeClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onToggleLike({
+            id: movie.id,
+            title: movie.title,
+            posterPath: movie.posterPath,
+            voteAverage: movie.voteAverage,
+        });
     };
 
     return (
@@ -44,11 +56,7 @@ export const MoviePosterCard = ({ movie, liked, onToggleLike }: MoviePosterCardP
                     )}
 
                     <Button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            onToggleLike(movie.id);
-                        }}
+                        onClick={handleLikeClick}
                         className={`${classes.favoriteButton} ${liked ? classes.favoriteButtonLiked : ""}`}
                     >
                         <Box component="span" className={classes.favIcon}>
