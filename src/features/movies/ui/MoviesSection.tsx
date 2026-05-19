@@ -48,12 +48,6 @@ export const MoviesSection = ({
                 )}
             </Box>
 
-            {isError && (
-                <Alert severity="error" className={classes.errorBox}>
-                    TMDB request failed.
-                </Alert>
-            )}
-
             {!isError && movies && movies.length > 0 && (
                 <Box className={`${classes.grid} ${gridClassName ?? ""}`}>
                     {movies.map((movie) => (
