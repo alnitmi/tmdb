@@ -55,25 +55,61 @@ export const MovieDetailsPage = () => {
                     </Button>
                 </Box>
 
-                <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 4, alignItems: "flex-start" }}>
-                    <Box sx={{ width: isMobile ? "100%" : 200, flexShrink: 0, alignSelf: isMobile ? "center" : "flex-start" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: isMobile ? "column" : "row",
+                        gap: 4,
+                        alignItems: "flex-start",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: isMobile ? "100%" : 200,
+                            flexShrink: 0,
+                            alignSelf: isMobile ? "center" : "flex-start",
+                        }}
+                    >
                         {poster ? (
                             <Box
                                 component="img"
                                 src={poster}
                                 alt={movie.title}
-                                sx={{ width: "100%", maxWidth: 200, borderRadius: 2, boxShadow: 4, display: "block", mx: "auto" }}
+                                sx={{
+                                    width: "100%",
+                                    maxWidth: 200,
+                                    borderRadius: 2,
+                                    boxShadow: 4,
+                                    display: "block",
+                                    mx: "auto",
+                                }}
                             />
                         ) : (
-                            <Box sx={{ width: "100%", maxWidth: 200, aspectRatio: "0.68", bgcolor: "grey.800", borderRadius: 2, display: "flex", alignItems: "center", justifyContent: "center", mx: "auto" }}>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                    maxWidth: 200,
+                                    aspectRatio: "0.68",
+                                    bgcolor: "grey.800",
+                                    borderRadius: 2,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    mx: "auto",
+                                }}
+                            >
                                 <Typography color="white">{movie.title}</Typography>
                             </Box>
                         )}
                     </Box>
 
                     <Box sx={{ flex: 1 }}>
-                        <Typography variant="h3" fontWeight="bold" gutterBottom>{movie.title}</Typography>
-                        <Typography variant="body1" color="text.secondary" gutterBottom>{releaseYear} • {runtime}</Typography>
+                        <Typography variant="h3" sx={{ fontWeight: "bold", mb: 1 }}>
+                            {movie.title}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                            {releaseYear} • {runtime}
+                        </Typography>
                         {movie.genres && (
                             <Box sx={{ mb: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
                                 {movie.genres.map((genre) => (
@@ -81,13 +117,17 @@ export const MovieDetailsPage = () => {
                                 ))}
                             </Box>
                         )}
-                        <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>{movie.overview}</Typography>
+                        <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                            {movie.overview}
+                        </Typography>
                     </Box>
                 </Box>
 
                 {credits?.cast && credits.cast.length > 0 && (
                     <Box sx={{ mt: 4 }}>
-                        <Typography variant="h5" gutterBottom>Cast</Typography>
+                        <Typography variant="h5" sx={{ mb: 1 }}>
+                            Cast
+                        </Typography>
                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
                             {credits.cast.slice(0, 6).map((actor) => (
                                 <Box key={actor.id} sx={{ flex: "0 0 100px", textAlign: "center" }}>
@@ -95,7 +135,14 @@ export const MovieDetailsPage = () => {
                                         component="img"
                                         src={getImageUrl(actor.profilePath) || "https://placehold.co/80x80"}
                                         alt={actor.name}
-                                        sx={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", mb: 0.5, mx: "auto" }}
+                                        sx={{
+                                            width: 80,
+                                            height: 80,
+                                            borderRadius: "50%",
+                                            objectFit: "cover",
+                                            mb: 0.5,
+                                            mx: "auto",
+                                        }}
                                     />
                                     <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block' }}>
                                         {actor.name}
@@ -110,7 +157,9 @@ export const MovieDetailsPage = () => {
                 )}
 
                 <Box sx={{ mt: 4 }}>
-                    <Typography variant="h5" gutterBottom>Similar Movies</Typography>
+                    <Typography variant="h5" sx={{ mb: 1 }}>
+                        Similar Movies
+                    </Typography>
                     {similarMovies?.results?.length ? (
                         <MoviesSection
                             title=""

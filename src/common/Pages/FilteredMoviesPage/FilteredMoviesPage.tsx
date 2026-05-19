@@ -76,7 +76,7 @@ export const FilteredMoviesPage = () => {
 
     return (
         <Container sx={{ mt: 4 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" sx={{ mb: 3 }}>
                 Filtered Movies
             </Typography>
 
@@ -94,10 +94,16 @@ export const FilteredMoviesPage = () => {
                             gap: 3,
                         }}
                     >
-                        <Typography variant="subtitle1" fontWeight="medium">Filters</Typography>
+                        <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
+                            Filters
+                        </Typography>
+
                         <Divider />
+
                         <Box>
-                            <Typography variant="body2" color="text.secondary" gutterBottom fontWeight={500}>Genres</Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+                                Genres
+                            </Typography>
                             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 1 }}>
                                 {genresData?.map((genre) => (
                                     <Chip
@@ -112,9 +118,13 @@ export const FilteredMoviesPage = () => {
                                 ))}
                             </Box>
                         </Box>
+
                         <Divider />
+
                         <Box>
-                            <Typography variant="body2" color="text.secondary" gutterBottom fontWeight={500}>Rating</Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+                                Rating
+                            </Typography>
                             <Box sx={{ px: 1, pt: 1 }}>
                                 <Slider
                                     value={ratingRange}
@@ -123,24 +133,42 @@ export const FilteredMoviesPage = () => {
                                     min={0}
                                     max={10}
                                     step={0.1}
-                                    marks={[{ value: 0, label: "0" }, { value: 10, label: "10" }]}
+                                    marks={[
+                                        { value: 0, label: "0" },
+                                        { value: 10, label: "10" },
+                                    ]}
                                 />
                             </Box>
                             <Typography variant="caption" color="text.disabled" sx={{ textAlign: "center", display: "block" }}>
                                 {ratingRange[0]} – {ratingRange[1]}
                             </Typography>
                         </Box>
+
                         <Divider />
+
                         <FormControl size="small" fullWidth>
                             <InputLabel>Sort by</InputLabel>
-                            <Select value={sortBy} label="Sort by" onChange={(e) => setSortBy(e.target.value)}>
+                            <Select
+                                value={sortBy}
+                                label="Sort by"
+                                onChange={(e) => setSortBy(e.target.value)}
+                            >
                                 {sortOptions.map((opt) => (
-                                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                                    <MenuItem key={opt.value} value={opt.value}>
+                                        {opt.label}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Paper>
-                    <Button variant="outlined" onClick={handleReset} fullWidth startIcon={<span>↺</span>}>
+
+                    <Button
+                        variant="outlined"
+                        onClick={handleReset}
+                        fullWidth
+                        startIcon={<span>↺</span>}
+                        sx={{ color: "text.primary", borderColor: "divider" }}
+                    >
                         Reset filters
                     </Button>
                 </Box>
@@ -155,6 +183,7 @@ export const FilteredMoviesPage = () => {
                         showViewMore={false}
                         gridClassName={classes.gridCategories}
                     />
+
                     {data && data.totalPages > 1 && (
                         <Pagination
                             count={data.totalPages}
