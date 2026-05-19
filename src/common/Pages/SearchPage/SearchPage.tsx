@@ -1,5 +1,5 @@
 import { useState, type FormEvent, useEffect } from "react";
-import { Box, Container, TextField, Button, Typography, Alert } from "@mui/material";
+import { Box, Container, TextField, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import { useSearchMoviesQuery } from "@/features/movies/api/tmdbApi";
@@ -71,14 +71,13 @@ export const SearchPage = () => {
 
                 {deferredQuery && (
                     <Box sx={{ mt: 4 }}>
-                        {isError ? (
-                            <Alert severity="error">Failed to load results</Alert>
-                        ) : data?.results?.length === 0 ? (
+                        {!isError && data?.results?.length === 0 && (
                             <Typography>No matches found for "{deferredQuery}"</Typography>
-                        ) : (
+                        )}
+                        {!isError && data?.results && data.results.length > 0 && (
                             <MoviesSection
                                 title={`Results for "${deferredQuery}"`}
-                                movies={data?.results}
+                                movies={data.results}
                                 isError={false}
                                 isLiked={isLiked}
                                 onToggleLike={toggleLike}

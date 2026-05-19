@@ -3,7 +3,6 @@ import {
     Container,
     Typography,
     Box,
-    Alert,
     Chip,
     Button,
     useMediaQuery,
@@ -34,13 +33,7 @@ export const MovieDetailsPage = () => {
     const { toggleLike, isLiked } = useLikedMovies();
 
     if (isLoading) return null;
-    if (isError || !movie) {
-        return (
-            <Container sx={{ py: 4 }}>
-                <Alert severity="error">Failed to load movie details</Alert>
-            </Container>
-        );
-    }
+    if (isError || !movie) return null;
 
     const poster = getImageUrl(movie.posterPath);
     const releaseYear = movie.releaseDate?.split("-")[0] || "Unknown";
@@ -55,49 +48,17 @@ export const MovieDetailsPage = () => {
                     </Button>
                 </Box>
 
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: isMobile ? "column" : "row",
-                        gap: 4,
-                        alignItems: "flex-start",
-                    }}
-                >
-                    <Box
-                        sx={{
-                            width: isMobile ? "100%" : 200,
-                            flexShrink: 0,
-                            alignSelf: isMobile ? "center" : "flex-start",
-                        }}
-                    >
+                <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 4, alignItems: "flex-start" }}>
+                    <Box sx={{ width: isMobile ? "100%" : 200, flexShrink: 0, alignSelf: isMobile ? "center" : "flex-start" }}>
                         {poster ? (
                             <Box
                                 component="img"
                                 src={poster}
                                 alt={movie.title}
-                                sx={{
-                                    width: "100%",
-                                    maxWidth: 200,
-                                    borderRadius: 2,
-                                    boxShadow: 4,
-                                    display: "block",
-                                    mx: "auto",
-                                }}
+                                sx={{ width: "100%", maxWidth: 200, borderRadius: 2, boxShadow: 4, display: "block", mx: "auto" }}
                             />
                         ) : (
-                            <Box
-                                sx={{
-                                    width: "100%",
-                                    maxWidth: 200,
-                                    aspectRatio: "0.68",
-                                    bgcolor: "grey.800",
-                                    borderRadius: 2,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    mx: "auto",
-                                }}
-                            >
+                            <Box sx={{ width: "100%", maxWidth: 200, aspectRatio: "0.68", bgcolor: "grey.800", borderRadius: 2, display: "flex", alignItems: "center", justifyContent: "center", mx: "auto" }}>
                                 <Typography color="white">{movie.title}</Typography>
                             </Box>
                         )}
@@ -135,14 +96,7 @@ export const MovieDetailsPage = () => {
                                         component="img"
                                         src={getImageUrl(actor.profilePath) || "https://placehold.co/80x80"}
                                         alt={actor.name}
-                                        sx={{
-                                            width: 80,
-                                            height: 80,
-                                            borderRadius: "50%",
-                                            objectFit: "cover",
-                                            mb: 0.5,
-                                            mx: "auto",
-                                        }}
+                                        sx={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", mb: 0.5, mx: "auto" }}
                                     />
                                     <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block' }}>
                                         {actor.name}
