@@ -102,7 +102,7 @@ export const MainPage = () => {
 
                         {!hasTmdbCredentials && (
                             <Alert severity="warning" className={classes.credentialsAlert}>
-                                Add `VITE_TMDB_API_KEY` or `VITE_TMDB_TOKEN` to `.env`.
+                                Add `VITE_TMDB_API_KEY` or `VITE_TMDB_TOKEN`.
                             </Alert>
                         )}
                     </Box>
