@@ -1,6 +1,6 @@
 import { Container, Typography, Box } from "@mui/material";
 import { MoviePosterCard } from "@/features/movies/ui/MoviePosterCard";
-import { useLikedMovies, type LikedMovie } from "@/features/favorites/model/useLikedMovies";
+import { useLikedMovies } from "@/features/favorites/model/useLikedMovies";
 
 export const FavoritesPage = () => {
     const { likedMovies, toggleLike, isLiked } = useLikedMovies();
