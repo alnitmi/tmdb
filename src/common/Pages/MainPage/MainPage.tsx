@@ -114,9 +114,7 @@ export const MainPage = () => {
                     <MoviesSection
                         title={movieSections[0].title}
                         movies={popularQuery.data?.results?.slice(0, 6)}
-                        isLoading={popularQuery.isLoading}
                         isError={popularQuery.isError}
-                        likedMovies={likedMovies}
                         isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
@@ -125,9 +123,7 @@ export const MainPage = () => {
                     <MoviesSection
                         title={movieSections[1].title}
                         movies={topRatedQuery.data?.results?.slice(0, 6)}
-                        isLoading={topRatedQuery.isLoading}
                         isError={topRatedQuery.isError}
-                        likedMovies={likedMovies}
                         isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
@@ -136,9 +132,7 @@ export const MainPage = () => {
                     <MoviesSection
                         title={movieSections[2].title}
                         movies={upcomingQuery.data?.results?.slice(0, 6)}
-                        isLoading={upcomingQuery.isLoading}
                         isError={upcomingQuery.isError}
-                        likedMovies={likedMovies}
                         isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore
@@ -147,9 +141,7 @@ export const MainPage = () => {
                     <MoviesSection
                         title={movieSections[3].title}
                         movies={nowPlayingQuery.data?.results?.slice(0, 6)}
-                        isLoading={nowPlayingQuery.isLoading}
                         isError={nowPlayingQuery.isError}
-                        likedMovies={likedMovies}
                         isLiked={isLiked}
                         onToggleLike={toggleLike}
                         showViewMore

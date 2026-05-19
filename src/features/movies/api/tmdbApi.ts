@@ -9,7 +9,6 @@ import type {
   MovieListDto,
   SearchMoviesArgs,
   MovieCredits,
-  CreditsDto,
   DiscoverMoviesArgs,
 } from "./tmdbApi.types";
 import {
@@ -58,7 +57,11 @@ const baseQueryWithErrorHandler = fetchBaseQuery({
   },
 });
 
-const baseQueryWithLoadingAndError = async (args, api, extraOptions) => {
+const baseQueryWithLoadingAndError = async (
+    args: Parameters<typeof baseQueryWithErrorHandler>[0],
+    api: Parameters<typeof baseQueryWithErrorHandler>[1],
+    extraOptions: Parameters<typeof baseQueryWithErrorHandler>[2]
+) => {
   api.dispatch(startLoading());
   const result = await baseQueryWithErrorHandler(args, api, extraOptions);
   api.dispatch(stopLoading());
@@ -72,7 +75,7 @@ const baseQueryWithLoadingAndError = async (args, api, extraOptions) => {
       message = "Invalid API key or token. Please check your credentials.";
     } else if (status === 404) {
       message = "Resource not found (404).";
-    } else if (status >= 500) {
+    } else if (typeof status === "number" && status >= 500) {
       message = "Server error. Please try again later.";
     }
     api.dispatch(setError(message));
@@ -188,7 +191,7 @@ export const tmdbApi = createApi({
     discoverMovies: builder.query<MovieList, DiscoverMoviesArgs>({
       query: (params) => ({
         url: "/discover/movie",
-        params: withDefaultParams(params),
+        params: withDefaultParams(params as Record<string, string | number | boolean | undefined>),
       }),
       transformResponse: (response: unknown) => {
         const validated = MovieListDtoSchema.parse(response);

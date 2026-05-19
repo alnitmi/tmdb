@@ -23,7 +23,7 @@ export const SearchPage = () => {
 
     const deferredQuery = useDeferredValue(submittedQuery.trim());
 
-    const { data, isLoading, isError, isFetching } = useSearchMoviesQuery(
+    const { data, isError } = useSearchMoviesQuery(
         deferredQuery ? { query: deferredQuery } : skipToken
     );
     const { likedMovies, toggleLike, isLiked } = useLikedMovies();
@@ -79,9 +79,7 @@ export const SearchPage = () => {
                             <MoviesSection
                                 title={`Results for "${deferredQuery}"`}
                                 movies={data?.results}
-                                isLoading={false}
                                 isError={false}
-                                likedMovies={likedMovies}
                                 isLiked={isLiked}
                                 onToggleLike={toggleLike}
                                 showViewMore={false}

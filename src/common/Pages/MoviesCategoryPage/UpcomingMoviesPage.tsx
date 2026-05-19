@@ -17,9 +17,7 @@ export const UpcomingMoviesPage = () => {
             <MoviesSection
                 title="Upcoming Movies"
                 movies={data?.results}
-                isLoading={isLoading}
                 isError={isError}
-                likedMovies={likedMovies}
                 isLiked={isLiked}
                 onToggleLike={toggleLike}
                 showViewMore={false}

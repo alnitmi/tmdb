@@ -7,8 +7,8 @@ import classes from "@/features/movies/ui/Movies.module.css";
 
 export const PopularMoviesPage = () => {
     const [page, setPage] = useState(1);
-    const { data, isLoading, isError } = useGetPopularMoviesQuery(page);
-    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
+    const { data, isError } = useGetPopularMoviesQuery(page);
+    const { toggleLike, isLiked } = useLikedMovies();
 
     const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => setPage(value);
 
@@ -17,9 +17,7 @@ export const PopularMoviesPage = () => {
             <MoviesSection
                 title="Popular Movies"
                 movies={data?.results}
-                isLoading={isLoading}
                 isError={isError}
-                likedMovies={likedMovies}
                 isLiked={isLiked}
                 onToggleLike={toggleLike}
                 showViewMore={false}

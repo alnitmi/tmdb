@@ -4,13 +4,11 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import clsx from "clsx";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-
-import { NavButton } from "@/common/components/NavButton/NavButton";
 import type { ThemeMode } from "@/common/Theme/theme";
 import logo from "@/assets/tmdb.svg";
-
 import styles from "./Header.module.css";
 
 type HeaderProps = {
@@ -37,16 +35,8 @@ export const Header = ({ mode, onToggleTheme }: HeaderProps) => {
       >
         <Toolbar className={styles.toolbar}>
           <Container maxWidth="lg" className={styles.container}>
-            <Box
-                component={RouterLink}
-                to="/"
-                className={styles.logoLink}
-            >
-              <img
-                  src={logo}
-                  alt="TMDB Logo"
-                  className={styles.logo}
-              />
+            <Box component={RouterLink} to="/" className={styles.logoLink}>
+              <img src={logo} alt="TMDB Logo" className={styles.logo} />
             </Box>
 
             <Box className={styles.nav}>
@@ -57,14 +47,26 @@ export const Header = ({ mode, onToggleTheme }: HeaderProps) => {
 
                 return (
                     <Box key={label} className={styles.navItem}>
-                      <NavButton
+                      <Button
                           disableRipple
                           component={RouterLink}
                           to={path}
                           className={clsx(styles.navButton, isActive && styles.active)}
+                          sx={{
+                            borderRadius: 999,
+                            padding: "10px 18px",
+                            fontWeight: 700,
+                            color: "inherit",
+                            textTransform: "none",
+                            whiteSpace: "nowrap",
+                            boxShadow: "none",
+                            "&:hover": {
+                              backgroundColor: "transparent",
+                            },
+                          }}
                       >
                         {label}
-                      </NavButton>
+                      </Button>
 
                       {index < navItems.length - 1 && (
                           <Typography component="span" className={styles.navDivider}>
@@ -76,11 +78,7 @@ export const Header = ({ mode, onToggleTheme }: HeaderProps) => {
               })}
             </Box>
 
-            <IconButton
-                onClick={onToggleTheme}
-                className={styles.themeButton}
-                disableRipple
-            >
+            <IconButton onClick={onToggleTheme} className={styles.themeButton} disableRipple>
               <Box component="span" className={styles.themeIcon}>
                 {mode === "dark" ? "\u2600" : "\u263D"}
               </Box>

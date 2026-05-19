@@ -1,17 +1,15 @@
-import {Alert, Box, Button, Typography} from "@mui/material";
-import {useTheme} from "@mui/material/styles";
-import {Link as RouterLink} from "react-router-dom";
-import type {MovieCard as MovieCardType} from "@/features/movies/api/tmdbApi.types";
-import {MoviePosterCard} from "@/features/movies/ui/MoviePosterCard";
-import type {LikedMovie} from "@/features/favorites/model/useLikedMovies";
+import { Box, Button, Typography, Alert } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { Link as RouterLink } from "react-router-dom";
+import type { MovieCard as MovieCardType } from "@/features/movies/api/tmdbApi.types";
+import { MoviePosterCard } from "@/features/movies/ui/MoviePosterCard";
+import type { LikedMovie } from "@/features/favorites/model/useLikedMovies";
 import classes from "@/features/movies/ui/Movies.module.css";
 
 type MoviesSectionProps = {
     title: string;
     movies?: MovieCardType[];
-    isLoading: boolean;
     isError: boolean;
-    likedMovies: LikedMovie[];
     isLiked: (id: number) => boolean;
     onToggleLike: (movie: LikedMovie) => void;
     showViewMore?: boolean;
@@ -22,9 +20,7 @@ type MoviesSectionProps = {
 export const MoviesSection = ({
                                   title,
                                   movies,
-                                  isLoading,
                                   isError,
-                                  likedMovies,
                                   isLiked,
                                   onToggleLike,
                                   showViewMore = false,

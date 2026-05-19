@@ -111,9 +111,7 @@ export const MovieDetailsPage = () => {
                         <MoviesSection
                             title=""
                             movies={similarMovies.results.slice(0, 6)}
-                            isLoading={false}
                             isError={false}
-                            likedMovies={likedMovies}
                             isLiked={isLiked}
                             onToggleLike={toggleLike}
                             showViewMore={false}
