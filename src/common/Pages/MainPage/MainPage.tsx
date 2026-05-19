@@ -26,7 +26,7 @@ export const MainPage = () => {
     const [heroSeed] = useState(() => Math.random());
     const navigate = useNavigate();
 
-    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
+    const { toggleLike, isLiked } = useLikedMovies();
 
     const hasTmdbCredentials = Boolean(
         import.meta.env.VITE_TMDB_API_KEY || import.meta.env.VITE_TMDB_TOKEN

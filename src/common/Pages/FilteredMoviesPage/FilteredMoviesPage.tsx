@@ -40,7 +40,7 @@ export const FilteredMoviesPage = () => {
     const debouncedRating = useDebounce(ratingRange, 200);
 
     const { data: genresData } = useGetGenresQuery();
-    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
+    const { toggleLike, isLiked } = useLikedMovies();
 
     const withGenres = selectedGenreIds.join(",");
     const hasRatingFilter = debouncedRating[0] !== 0 || debouncedRating[1] !== 10;
@@ -55,7 +55,7 @@ export const FilteredMoviesPage = () => {
         }),
     };
 
-    const { data, isLoading, isError } = useDiscoverMoviesQuery(queryArgs);
+    const { data, isError } = useDiscoverMoviesQuery(queryArgs);
 
     const handleGenreToggle = (genreId: number) => {
         setSelectedGenreIds((prev) =>

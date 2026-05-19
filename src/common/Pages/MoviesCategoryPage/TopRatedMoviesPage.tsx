@@ -7,8 +7,8 @@ import classes from "@/features/movies/ui/Movies.module.css";
 
 export const TopRatedMoviesPage = () => {
     const [page, setPage] = useState(1);
-    const { data, isLoading, isError } = useGetTopRatedMoviesQuery(page);
-    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
+    const { data, isError } = useGetTopRatedMoviesQuery(page);
+    const { toggleLike, isLiked } = useLikedMovies();
 
     const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => setPage(value);
 

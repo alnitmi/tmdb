@@ -26,7 +26,7 @@ export const SearchPage = () => {
     const { data, isError } = useSearchMoviesQuery(
         deferredQuery ? { query: deferredQuery } : skipToken
     );
-    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
+    const { toggleLike, isLiked } = useLikedMovies();
 
     const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

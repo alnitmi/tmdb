@@ -30,8 +30,8 @@ export const MovieDetailsPage = () => {
 
     const { data: movie, isLoading, isError } = useGetMovieByIdQuery(movieId);
     const { data: credits } = useGetMovieCreditsQuery(movieId);
-    const { data: similarMovies, isLoading: similarLoading } = useGetSimilarMoviesQuery(movieId);
-    const { likedMovies, toggleLike, isLiked } = useLikedMovies();
+    const { data: similarMovies } = useGetSimilarMoviesQuery(movieId);
+    const { toggleLike, isLiked } = useLikedMovies();
 
     if (isLoading) return null;
     if (isError || !movie) {
@@ -97,8 +97,12 @@ export const MovieDetailsPage = () => {
                                         alt={actor.name}
                                         sx={{ width: 80, height: 80, borderRadius: "50%", objectFit: "cover", mb: 0.5, mx: "auto" }}
                                     />
-                                    <Typography variant="caption" color="text.secondary" display="block" noWrap>{actor.name}</Typography>
-                                    <Typography variant="caption" color="text.disabled" display="block" noWrap>{actor.character}</Typography>
+                                    <Typography variant="caption" color="text.secondary" noWrap sx={{ display: 'block' }}>
+                                        {actor.name}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.disabled" noWrap sx={{ display: 'block' }}>
+                                        {actor.character}
+                                    </Typography>
                                 </Box>
                             ))}
                         </Box>
